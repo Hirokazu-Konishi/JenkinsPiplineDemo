@@ -43,6 +43,14 @@ pipeline {
         stage('releas') {
             steps {
                 echo 'releas'
+                withCredentials([[
+                    $class: 'AmazonWebServicesCredentialsBinding',
+                    credentialsId: 'MyAWS',
+                    accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+                    secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]){
+                        sh(script: 'aws s3 cp /var/lib/jenkins/workspace/JenkinsPipline/index.html s3://prod-jenkins-20250820/')
+                }
+
             }
         }
     }
